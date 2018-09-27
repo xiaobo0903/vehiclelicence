@@ -31,7 +31,7 @@ def recignize1():
 
     imgurl = urllib.unquote(p)
     ret = vlr.licenceRecognize(imgurl)
-    print ret
+    #print ret
     return render_template("licence.html",
         title = 'myvehicle',
         licence = json.loads(ret))

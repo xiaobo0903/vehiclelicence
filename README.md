@@ -17,7 +17,7 @@
    
 2、进入安装目录，下载程序:
 
-   git clone pip https://github.com/xiaobo0903/vehiclelicence.git
+   git clone https://github.com/xiaobo0903/vehiclelicence.git
 
 3、运行程序：
 

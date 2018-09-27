@@ -20,28 +20,28 @@ def imageProcess(gray):
     # 高斯平滑
     gaussian = cv2.GaussianBlur(gray, (3, 3), 0, 0, cv2.BORDER_DEFAULT)
     
-    cv2.imwrite("gaussian_1.jpg", gaussian)
+    #cv2.imwrite("gaussian_1.jpg", gaussian)
 
     # Sobel算子，X方向求梯度
     sobel = cv2.convertScaleAbs(cv2.Sobel(gaussian, cv2.CV_16S, 1, 0, ksize=3))
-    cv2.imwrite("a_1_sobel.jpg", sobel) 
+    #cv2.imwrite("a_1_sobel.jpg", sobel) 
 
     # 二值化
     ret, binary = cv2.threshold(sobel, 120, 255, cv2.THRESH_BINARY)
-    cv2.imwrite("a_2_binary.jpg", binary) 
+    #cv2.imwrite("a_2_binary.jpg", binary) 
 
     # 对二值化后的图像进行闭操作
     element = cv2.getStructuringElement(cv2.MORPH_RECT, (18, 4))
     closed = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, element)
-    cv2.imwrite("a_3_closed.jpg", closed) 
+    #cv2.imwrite("a_3_closed.jpg", closed) 
     
     # 再通过腐蚀->膨胀 去掉比较小的噪点
     erosion = cv2.erode(closed, None, iterations=2)
-    cv2.imwrite("a_4_erosion.jpg", erosion) 
+    #cv2.imwrite("a_4_erosion.jpg", erosion) 
 
     dilation = cv2.dilate(erosion, None, iterations=2)
 
-    cv2.imwrite("a_5_dilation.jpg", dilation) 
+    #cv2.imwrite("a_5_dilation.jpg", dilation) 
     # 返回最终图像
     return dilation
 
@@ -81,7 +81,7 @@ def findPlateNumberRegion(img):
         # 符合条件，加入到轮廓集合
         region.append(box)
         cv2.drawContours(img, [box], 0, (0, 255, 0), 2)  
-    cv2.imwrite("aaaa.jpg", img)
+    #cv2.imwrite("aaaa.jpg", img)
     return region
 
 def detect(img):
