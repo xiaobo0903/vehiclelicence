@@ -50,7 +50,7 @@ def findPlateNumberRegion(img):
 
     region = []
     # 查找外框轮廓
-    contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+    cvimage, contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE,cv2.CHAIN_APPROX_SIMPLE)
     #print("contours lenth is :%s" % (len(contours)))
     # 筛选面积小的
 
@@ -69,7 +69,7 @@ def findPlateNumberRegion(img):
         #print("rect is:%s" % {rect})
 
         # 根据矩形转成box类型，并int化
-        box = np.int32(cv2.cv.BoxPoints(rect))
+        box = np.int32(cv2.boxPoints(rect))
 
         # 计算高和宽
         height = abs(box[0][1] - box[2][1])
@@ -160,7 +160,7 @@ def detect(img):
     width2 = width1*(80.0/height1)
     #print width2
     res_img2 = cv2.resize(img_plate,(int(width2), 80),interpolation=cv2.INTER_CUBIC) 
-    cv2.imwrite("a_6_resize.jpg", res_img2)
+    #cv2.imwrite("a_6_resize.jpg", res_img2)
     return res_img2
   
 def licenceRecognize(imgurl):
@@ -175,7 +175,7 @@ def licenceRecognize(imgurl):
         status = 1
 
     except Exception, e:
-        #print e 
+        print e 
         img = none_img
     
     finally:
@@ -185,7 +185,7 @@ def licenceRecognize(imgurl):
         str_encode = data_encode.tostring()
         ret = {}
         ret["status"] = status 
-        ret["img"] = base64.b64encode(str_encode) 
+        ret["img"] = "data:image/jpg;base64,"+base64.b64encode(str_encode) 
         return json.dumps(ret)
 
 if __name__ == '__main__':
