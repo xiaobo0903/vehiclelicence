@@ -19,6 +19,18 @@ def recignize():
 
     imgurl = urllib.unquote(p)
     ret = vlr.licenceRecognize(imgurl)  
+    return ret
+
+#imgurl需要进行encode编码，否则会出错！
+@app.route('/vehicle/licence/recognize1', methods=['post','get'])
+def recignize1():
+    p = request.args.get('imgurl')
+
+    if p == None:
+        return jsonify({'t': p})
+
+    imgurl = urllib.unquote(p)
+    ret = vlr.licenceRecognize(imgurl)
     print ret
     return render_template("licence.html",
         title = 'myvehicle',

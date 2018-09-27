@@ -13,7 +13,7 @@ import cStringIO
 minPlateRatio = 2.5 # 车牌最小比例
 maxPlateRatio = 5   # 车牌最大比例
 
-none_img = io.imread("nonelicence.jpg")
+none_img = cv2.imread("nonelicence.jpg")
 
 # 图像处理
 def imageProcess(gray):
@@ -51,7 +51,7 @@ def findPlateNumberRegion(img):
     region = []
     # 查找外框轮廓
     contours, hierarchy = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
-    print("contours lenth is :%s" % (len(contours)))
+    #print("contours lenth is :%s" % (len(contours)))
     # 筛选面积小的
 
 
@@ -66,7 +66,7 @@ def findPlateNumberRegion(img):
 
         # 转换成对应的矩形（最小）
         rect = cv2.minAreaRect(cnt)
-        print("rect is:%s" % {rect})
+        #print("rect is:%s" % {rect})
 
         # 根据矩形转成box类型，并int化
         box = np.int32(cv2.cv.BoxPoints(rect))
@@ -156,9 +156,9 @@ def detect(img):
     #所有的牌号都统一高度：80 长度自适应：
 
     height1,width1 = img_plate.shape[:2]  #获取原图像的水平方向尺寸和垂直方向尺寸。
-    print height1/80.0
+    #print height1/80.0
     width2 = width1*(80.0/height1)
-    print width2
+    #print width2
     res_img2 = cv2.resize(img_plate,(int(width2), 80),interpolation=cv2.INTER_CUBIC) 
     cv2.imwrite("a_6_resize.jpg", res_img2)
     return res_img2
@@ -166,22 +166,25 @@ def detect(img):
 def licenceRecognize(imgurl):
 
     img = None
-
+    status = 0
     try:
         img = io.imread(imgurl)
         #file = cStringIO.StringIO(urllib2.urlopen(imgurl).read())
         #img = Image.open(file)
         img = detect(img)
+        status = 1
 
     except Exception, e:
-        print e 
+        #print e 
         img = none_img
     
     finally:
+        #cv2.imwrite("aaaaa.jpg", none_img)
         img_encode = cv2.imencode('.jpg', img)[1]
         data_encode = np.array(img_encode)
         str_encode = data_encode.tostring()
         ret = {}
+        ret["status"] = status 
         ret["img"] = base64.b64encode(str_encode) 
         return json.dumps(ret)
 
